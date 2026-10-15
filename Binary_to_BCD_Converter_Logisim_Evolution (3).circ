@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project source="3.8.0" version="1.0">
+  <lib name="0" desc="#Wiring"/><lib name="1" desc="#Gates"/><lib name="2" desc="#Plexers"/><lib name="3" desc="#Arithmetic"/><lib name="4" desc="#Memory"/><lib name="5" desc="#I/O"/>
+  <main name="main"/><options><a name="gateUndefined" val="ignore"/><a name="simlimit" val="1000"/></options><mappings/><toolbar/>
+  <circuit name="main">
+    <a name="circuit" val="main"/><a name="clabel" val="4-bit Binary to BCD Converter"/><a name="clabelup" val="north"/><a name="clabelfont" val="SansSerif plain 16"/>
+    <comp lib="0" name="Pin" loc="(100,120)"><a name="facing" val="east"/><a name="output" val="false"/><a name="width" val="1"/><a name="label" val="A (8)"/></comp>
+    <comp lib="0" name="Pin" loc="(100,200)"><a name="facing" val="east"/><a name="output" val="false"/><a name="width" val="1"/><a name="label" val="B (4)"/></comp>
+    <comp lib="0" name="Pin" loc="(100,280)"><a name="facing" val="east"/><a name="output" val="false"/><a name="width" val="1"/><a name="label" val="C (2)"/></comp>
+    <comp lib="0" name="Pin" loc="(100,360)"><a name="facing" val="east"/><a name="output" val="false"/><a name="width" val="1"/><a name="label" val="D (1)"/></comp>
+    <!-- T = A AND (B OR C) -->
+    <comp lib="1" name="OR Gate" loc="(300,240)"><a name="facing" val="east"/><a name="size" val="30"/><a name="inputs" val="2"/></comp>
+    <comp lib="1" name="AND Gate" loc="(430,170)"><a name="facing" val="east"/><a name="size" val="30"/><a name="inputs" val="2"/></comp>
+    <!-- U2 = B AND (NOT T OR C) -->
+    <comp lib="1" name="NOT Gate" loc="(490,310)"><a name="facing" val="east"/><a name="size" val="20"/></comp>
+    <comp lib="1" name="OR Gate" loc="(570,330)"><a name="facing" val="east"/><a name="size" val="30"/><a name="inputs" val="2"/></comp>
+    <comp lib="1" name="AND Gate" loc="(690,300)"><a name="facing" val="east"/><a name="size" val="30"/><a name="inputs" val="2"/></comp>
+    <!-- U1 = C XOR T -->
+    <comp lib="1" name="XOR Gate" loc="(600,430)"><a name="facing" val="east"/><a name="size" val="30"/><a name="inputs" val="2"/></comp>
+    <!-- Outputs: T, U3=0, U2, U1, U0 -->
+    <comp lib="0" name="Pin" loc="(850,170)"><a name="facing" val="east"/><a name="output" val="true"/><a name="width" val="1"/><a name="label" val="Tens T"/></comp>
+    <comp lib="0" name="Pin" loc="(850,240)"><a name="facing" val="east"/><a name="output" val="true"/><a name="width" val="1"/><a name="label" val="Units U3 (0)"/></comp>
+    <comp lib="0" name="Pin" loc="(850,300)"><a name="facing" val="east"/><a name="output" val="true"/><a name="width" val="1"/><a name="label" val="Units U2"/></comp>
+    <comp lib="0" name="Pin" loc="(850,430)"><a name="facing" val="east"/><a name="output" val="true"/><a name="width" val="1"/><a name="label" val="Units U1"/></comp>
+    <comp lib="0" name="Pin" loc="(850,500)"><a name="facing" val="east"/><a name="output" val="true"/><a name="width" val="1"/><a name="label" val="Units U0"/></comp>
+    <comp lib="0" name="Ground" loc="(800,240)"><a name="facing" val="south"/></comp>
+    <!-- Input routing -->
+    <wire from="(100,120)" to="(150,120)"/>
+    <wire from="(150,120)" to="(150,170)"/>
+    <wire from="(150,170)" to="(400,170)"/>
+    <wire from="(100,200)" to="(220,200)"/>
+    <wire from="(220,200)" to="(220,230)"/>
+    <wire from="(220,230)" to="(270,230)"/>
+    <wire from="(100,280)" to="(240,280)"/>
+    <wire from="(240,280)" to="(240,250)"/>
+    <wire from="(240,250)" to="(270,250)"/>
+    <wire from="(300,240)" to="(370,240)"/>
+    <wire from="(370,240)" to="(370,190)"/>
+    <wire from="(370,190)" to="(400,190)"/>
+    <!-- T output and branch -->
+    <wire from="(430,170)" to="(850,170)"/>
+    <wire from="(460,170)" to="(460,310)"/>
+    <wire from="(460,310)" to="(470,310)"/>
+    <wire from="(460,310)" to="(460,420)"/>
+    <wire from="(460,420)" to="(570,420)"/>
+    <!-- U2: NOT T and C into OR, then AND with B -->
+    <wire from="(490,310)" to="(540,310)"/>
+    <wire from="(100,280)" to="(130,280)"/><wire from="(130,280)" to="(130,380)"/><wire from="(130,380)" to="(520,380)"/><wire from="(520,380)" to="(520,350)"/>
+    <wire from="(520,350)" to="(540,350)"/>
+    <wire from="(570,330)" to="(630,330)"/>
+    <wire from="(630,330)" to="(630,290)"/>
+    <wire from="(630,290)" to="(660,290)"/>
+    <wire from="(100,200)" to="(120,200)"/><wire from="(120,200)" to="(120,400)"/><wire from="(120,400)" to="(610,400)"/><wire from="(610,400)" to="(610,310)"/>
+    <wire from="(610,310)" to="(660,310)"/>
+    <wire from="(690,300)" to="(850,300)"/>
+    <!-- U1 -->
+    <wire from="(100,280)" to="(140,280)"/><wire from="(140,280)" to="(140,460)"/><wire from="(140,460)" to="(540,460)"/><wire from="(540,460)" to="(540,440)"/>
+    <wire from="(540,440)" to="(570,440)"/>
+    <wire from="(600,430)" to="(850,430)"/>
+    <!-- U0 passthrough -->
+    <wire from="(100,360)" to="(160,360)"/><wire from="(160,360)" to="(160,500)"/><wire from="(160,500)" to="(850,500)"/>
+    <!-- U3 constant zero -->
+    <wire from="(800,240)" to="(850,240)"/>
+  </circuit>
+</project>
